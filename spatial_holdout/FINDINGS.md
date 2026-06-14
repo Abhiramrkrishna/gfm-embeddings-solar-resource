@@ -53,3 +53,23 @@
 
 **Verdict (emb-vs-geo, per-fold detrend): `GO`** — the GO survives removing the detrend leakage; effect size and significance are essentially unchanged, confirming the leakage was negligible as predicted (leverage ~0.11).
 
+
+## 2026-06-14 — Layer 2 hardening #2: station-pooling feasibility
+
+Full analysis in `station_pooling_feasibility.md`. Summary:
+
+- **DWD radiation network is small: 56 stations ever, ~40 active.** Relaxing the
+  full-5yr criterion adds only **+6 (3-yr)** / **+10 (2-yr)** / **+12 (all active)**
+  beyond the core 28. DWD-internal ceiling ≈ **n=38** (added stations have shorter
+  records → noisier kt_mean; needs a min-record-length check). 04642 Seehausen
+  was dropped for quality (71.5% valid), not coverage — re-addable.
+- **SYNOP in Germany ≠ extra stations** (same pyranometer set). Real expansion =
+  neighbouring-country pyranometers (KNMI, MeteoSwiss, ZAMG, Météo-France, …),
+  giving a realistic **Central-Europe n=50–80** but reframing scope and requiring
+  one parser per network. Counts are order-of-magnitude, verify per portal.
+- **PvLive: not a drop-in** — PV power, regionally aggregated, no point (lat,lon);
+  recommend dropping from the n-growth plan.
+- **Embedding re-extraction is negligible** (+25 stns ≈ 125 GEE calls ≈ 3–5 min,
+  free). Bottleneck is the ground-truth pipeline, not AlphaEarth.
+
+**Verdict: n=28→~38 cheap (DWD relaxed); n=50+ only via cross-border (KNMI first).**
