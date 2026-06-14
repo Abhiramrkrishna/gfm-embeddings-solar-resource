@@ -1,0 +1,5 @@
+feature_set,spatial_mae_pooled,spatial_mae_foldmean,spatial_mae_foldstd,loo_mae_pooled,degradation_pct
+geo,0.02644,0.02628,0.00759,0.02017,31.1
+emb,0.01915,0.01982,0.00923,0.01598,19.9
+combined,0.01834,0.01905,0.0097,0.01569,16.9
+shuffle,0.0268,0.0266,0.0076,0.02199,21.9

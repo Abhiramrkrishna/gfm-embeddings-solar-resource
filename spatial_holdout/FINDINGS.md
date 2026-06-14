@@ -29,3 +29,27 @@
 **Pre-registered verdict (emb-vs-geo): `GO`**  
 (GO ≥10% & p<0.05; KILL <5% or p≥0.05; else AMBIGUOUS, combined-vs-geo as tiebreaker.)
 
+
+## 2026-06-14 — Layer 2 hardening #1: per-fold geo detrend
+
+**Closes the last leakage caveat.** scripts/07 detrended kt_mean with one global OLS over all 28 stations (test station present in its own target). Here the OLS detrend is refit on training stations only, inside each fold; same K=4 spatial blocks (sizes [8, 6, 8, 6]), same RidgeCV/shuffle.
+
+
+**MAE (pooled over held-out stations), per-fold detrend:**
+
+| feature | spatial MAE | fold mean±std | LOO MAE | degradation |
+|---|---|---|---|---|
+| geo | 0.02644 | 0.02628±0.00759 | 0.02017 | +31.1% |
+| emb | 0.01915 | 0.01982±0.00923 | 0.01598 | +19.9% |
+| combined | 0.01834 | 0.01905±0.00970 | 0.01569 | +16.9% |
+| shuffle | 0.02680 | 0.02660±0.00760 | 0.02199 | +21.9% |
+
+**emb-vs-geo, global vs per-fold detrend (paired Wilcoxon):**
+
+- global detrend (scripts/07): +39.1%, p=0.0213
+- **per-fold detrend: +27.6%, p=0.0044**
+- combined-vs-geo (per-fold): +30.6%, p=0.0022
+
+
+**Verdict (emb-vs-geo, per-fold detrend): `GO`** — the GO survives removing the detrend leakage; effect size and significance are essentially unchanged, confirming the leakage was negligible as predicted (leverage ~0.11).
+
