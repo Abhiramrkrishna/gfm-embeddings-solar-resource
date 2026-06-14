@@ -1,0 +1,3 @@
+comparison,mae_reduction_pct,wilcoxon_p,verdict
+emb_vs_geo,39.1,0.0213,GO
+combined_vs_geo,36.9,0.0267,
