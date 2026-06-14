@@ -73,3 +73,70 @@ Full analysis in `station_pooling_feasibility.md`. Summary:
   free). Bottleneck is the ground-truth pipeline, not AlphaEarth.
 
 **Verdict: n=28→~38 cheap (DWD relaxed); n=50+ only via cross-border (KNMI first).**
+
+## 2026-06-14 — Layer 2 hardening #3: pool DWD-relaxed stations (n→38)
+
+Cheapest power hardening: added 10 DWD-relaxed radiation stations (re-derived from parse_stations.py metadata; downloaded + enriched + embeddings extracted) onto the core 28. Per-fold-detrend spatial-block re-test, **K fixed at 4** to match the n=28 run (pooling adds stations within the same 4 blocks; buffers shrink as the network densifies).
+
+
+3 added stations flagged unreliable (<~2yr valid kt): ['01346', '15000', '15444'] — Feldberg/Schwarzwald (1486 m) is valuable terrain but short-record; the strict run drops these.
+
+
+**emb-vs-geo across the record-length sensitivity ladder:**
+
+| set | n | min buffer | emb-vs-geo | Wilcoxon p | combined-vs-geo | verdict |
+|---|---|---|---|---|---|---|
+| core_n28 | 28 | 84 km | +27.6% | 0.0044 | +30.6% (p=0.0022) | `GO` |
+| strict_n35 | 35 | 84 km | +23.8% | 0.0698 | +26.6% (p=0.0247) | `KILL` |
+| all_n38 | 38 | 84 km | +13.7% | 0.0247 | +14.0% (p=0.0239) | `GO` |
+
+**Read:**
+- core n=28 (recomputed here): +27.6%, p=0.0044
+- strict n=35: +23.8%, p=0.0698
+- all n=38: +13.7%, p=0.0247
+
+Effect size and significance under pooling are reported above; the verdict column applies the pre-registered thresholds (GO ≥10% & p<0.05). Note the core-n28 number here uses K=4 fixed and may differ trivially from scripts/08's adaptive-K value.
+
+
+### Interpretation (grounded in per-station replication) — this did NOT harden the result
+
+The cheap pool was supposed to hold effect size and tighten significance. It did
+neither. The honest, per-station picture (signed abserr diff, all_n38 run):
+
+| group | emb beats geo |
+|---|---|
+| core 28 | **22/28** |
+| added reliable (≥3yr) 7 | **2/7** |
+| added unreliable (~2yr) 3 | 1/3 |
+
+**On 10 fresh DWD stations, emb beats geo at only 3/10 — about chance.** The
+embedding's advantage does NOT replicate on the new stations. Critically this is
+NOT just a short-record artifact: the 7 *reliable* added stations (3–4 yr,
+11k–16k valid hours) still show only 2/7. An earlier hypothesis that emb wins at
+atypical terrain is unsupported — Feldberg/Schwarzwald (1486 m) shows ~0
+advantage.
+
+Consequences for the verdict:
+- **strict n=35 (reliable targets, fairest test): +23.8% but p=0.0698 — NOT
+  significant → fails the pre-registered bar.** The n=28 GO does not survive
+  adding 7 reliable independent stations.
+- **all n=38: p=0.0247 is fragile** — it leans on the 22/28 core majority and is
+  unstable (p swings 0.07↔0.025 by adding 3 short-record stations). The naive
+  "GO" in the table is not trustworthy as a transfer claim once you look at which
+  stations carry it.
+- Aggregate MAE-reduction (magnitude) stays positive because core dominates, but
+  per-station *consistency* — what a leave-block-out transfer claim actually
+  needs — collapses on the new sites.
+
+**Bottom line: the n=28 emb-over-geo advantage is partly sample-specific and does
+not robustly generalize to 10 additional German stations.** Two non-exclusive
+readings remain open and the data can't cleanly separate them: (a) genuine
+non-replication, or (b) the new sites are "geo-easy" (small geo-residual, little
+for emb to win) — though several (Ueckermünde, Lügde) show emb actively *worse*,
+which argues against pure (b).
+
+**Decision:** n=28→38 DWD pooling is insufficient and is a caution flag, not a
+confirmation. To resolve, we need (1) longer records as these recent stations
+mature, and/or (2) a substantially larger, more diverse sample — the cross-border
+n=50–80 path (KNMI first). Do not advance the GO to a headline claim on the
+current evidence. Layer 3 stays dead; this is now the decisive open question.

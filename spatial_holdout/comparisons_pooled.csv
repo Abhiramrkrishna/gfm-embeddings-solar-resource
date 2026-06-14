@@ -1,0 +1,4 @@
+set,n,emb_vs_geo_pct,emb_vs_geo_p,combined_vs_geo_pct,combined_vs_geo_p,verdict
+all_n38,38,13.7,0.0247,14.0,0.0239,GO
+strict_n35,35,23.8,0.0698,26.6,0.0247,KILL
+core_n28,28,27.6,0.0044,30.6,0.0022,GO

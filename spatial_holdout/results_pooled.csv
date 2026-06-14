@@ -1,0 +1,4 @@
+set,n,K,fold_sizes,min_buffer_km,mae_geo,mae_emb,mae_combined,mae_shuffle,emb_vs_geo_pct,emb_vs_geo_p,combined_vs_geo_pct,combined_vs_geo_p,verdict
+all_n38,38,4,"[9, 10, 9, 10]",84.0,0.02235,0.01929,0.01922,0.02102,13.7,0.0247,14.0,0.0239,GO
+strict_n35,35,4,"[8, 10, 8, 9]",84.0,0.02153,0.0164,0.01579,0.02071,23.8,0.0698,26.6,0.0247,KILL
+core_n28,28,4,"[8, 6, 8, 6]",84.0,0.02644,0.01915,0.01834,0.0268,27.6,0.0044,30.6,0.0022,GO

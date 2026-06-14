@@ -1,0 +1,11 @@
+station_id,name,valid_kt_hours,span_years,kt_mean,reliable_target
+00867,Lautertal-Oberlauter,15410,4.0,0.6949,True
+01346,Feldberg/Schwarzwald,7915,2.0,0.5765,False
+01420,Frankfurt/Main,8577,2.65,0.6974,True
+02925,Leinefelde,15716,4.0,0.6802,True
+04642,Seehausen,14171,3.58,0.7128,True
+05142,Ueckermuende,11683,3.0,0.6977,True
+06197,Luegde-Paenbruch,11542,3.0,0.6687,True
+07370,Waldmuenchen,15379,4.0,0.6827,True
+15000,Aachen-Orsbach,7644,2.0,0.6289,False
+15444,Ulm-Maehringen,7390,2.17,0.6691,False
