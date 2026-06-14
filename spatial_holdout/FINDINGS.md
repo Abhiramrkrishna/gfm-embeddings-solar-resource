@@ -140,3 +140,34 @@ confirmation. To resolve, we need (1) longer records as these recent stations
 mature, and/or (2) a substantially larger, more diverse sample — the cross-border
 n=50–80 path (KNMI first). Do not advance the GO to a headline claim on the
 current evidence. Layer 3 stays dead; this is now the decisive open question.
+
+## 2026-06-14 — Layer 2 hardening #4: geo-easy diagnostic (resolves the open question)
+
+Adjudicates whether the 10 added stations' lack of embedding advantage is
+because they are "geo-easy" (uninformative) or because the effect is genuinely
+fragile. Per-fold-detrend, leave-one-STATION-out over all 38; per station:
+geo_residual_magnitude (how much geo misses) and emb_advantage (geo_res − emb_res).
+
+**Geo-easy hypothesis REJECTED.** Added geo-residual median **0.01404** vs core
+**0.01477** — essentially identical; Mann-Whitney two-sided **p=0.70**
+(one-sided added<core p=0.35). The added stations are NOT easier for geography;
+geography misses by the same amount at both groups.
+
+**At equal geo-difficulty, the embedding helps core but not the added stations:**
+emb_advantage median = **+0.00325 (core)** vs **+0.00001 (added, ≈ zero)**.
+
+**Verdict: GENUINELY FRAGILE** — comparable geo residual, no embedding advantage
+on independent stations. The non-replication is real, not an artifact of easy sites.
+
+**Honest nuance (does not rescue it):** across all 38, Spearman
+ρ(geo_residual, emb_advantage) = **+0.35, p=0.033** — the physically-sensible
+signature (embedding helps more where geography misses more) is weakly present.
+But it is core-driven and not robust (Pearson r=+0.17, p=0.30, n.s.), and the
+added stations specifically *violate* it: they sit at ~0 advantage even at large
+geo residual (e.g. Feldberg 01346 at residual 0.068 → advantage only +0.0045).
+
+**Bottom line:** the geo-easy alibi is gone. Most consistent read is that the
+n=28 emb-over-geo advantage is genuinely fragile / partly a favorable draw. A
+weak real effect is not excluded (the Spearman hint), but confirming it needs a
+larger, more diverse sample — the cross-border n=50–80 path — not the exhausted
+German DWD pool. Fig: data/figs/geo_easy_diagnostic.png.
