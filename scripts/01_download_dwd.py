@@ -36,29 +36,26 @@ STATIONS_CSV = "dwd_core_stations.csv"  # produced by parse_stations.py
 def list_remote_zips() -> dict[str, list[str]]:
     """Walk the DWD opendata directory for the hourly/solar product.
 
-    Returns: {station_id: [zip_filename, ...]} for each available archive.
-    Notes: DWD splits files into 'historical' and 'recent' folders nowadays.
+    Unlike most DWD products, hourly/solar keeps all station archives in one
+    flat folder (no recent/ vs historical/ subdirs). Each station has one
+    archive: stundenwerte_ST_{station_id}_row.zip (which contains the full
+    history through the latest update).
+
+    Returns: {station_id: [absolute_zip_url, ...]}
     """
-    folders = {"recent": f"{DWD_BASE}/recent/", "historical": f"{DWD_BASE}/historical/"}
+    base = DWD_BASE.rstrip("/") + "/"
+    r = requests.get(base, timeout=30)
+    r.raise_for_status()
+    zips = re.findall(r'href="([^"]+\.zip)"', r.text)
     by_station: dict[str, list[str]] = {}
-    for label, url in folders.items():
-        try:
-            r = requests.get(url, timeout=30)
-            r.raise_for_status()
-        except requests.RequestException:
-            # Fallback: some products have everything at top-level
-            r = requests.get(DWD_BASE + "/", timeout=30)
-            r.raise_for_status()
-        # Parse the Apache directory listing for .zip files
-        zips = re.findall(r'href="([^"]+\.zip)"', r.text)
-        for z in zips:
-            # Filename example: stundenwerte_ST_00183_row.zip
-            #                   stundenwerte_ST_00691_20090101_20231231_hist.zip
-            m = re.search(r"ST_(\d{5})", z)
-            if not m:
-                continue
-            sid = m.group(1)
-            by_station.setdefault(sid, []).append(url + z)
+    for z in zips:
+        m = re.search(r"ST_(\d{5})", z)
+        if not m:
+            continue
+        sid = m.group(1)
+        # `z` is just the filename (e.g. "stundenwerte_ST_00183_row.zip")
+        # because the directory listing uses relative hrefs
+        by_station.setdefault(sid, []).append(base + z)
     return by_station
 
 def download_station(station_id: str, zip_urls: list[str]) -> Path:
@@ -83,13 +80,16 @@ def parse_station_zip(zip_path: Path) -> pd.DataFrame:
         if not produkt_files:
             return pd.DataFrame()
         with zf.open(produkt_files[0]) as f:
-            df = pd.read_csv(f, sep=";", na_values=["-999", -999], dtype={"STATIONS_ID": str})
+            df = pd.read_csv(f, sep=";", skipinitialspace=True, na_values=["-999", -999], dtype={"STATIONS_ID": str})
     df.columns = [c.strip() for c in df.columns]
     # Strip trailing 'eor' marker column if present
     df = df.drop(columns=[c for c in df.columns if c.lower() == "eor"], errors="ignore")
-    # Parse the timestamp (UTC, YYYYMMDDHHmm or YYYYMMDDHH)
-    ts = df["MESS_DATUM"].astype(str).str.zfill(10)
-    df["timestamp_utc"] = pd.to_datetime(ts, format="%Y%m%d%H", utc=True, errors="coerce")
+    # Parse the timestamp: actual format is "YYYYMMDDhh:mm" (e.g. "1981010100:09")
+    ts = df["MESS_DATUM"].astype(str).str.strip()
+    df["timestamp_utc"] = (
+        pd.to_datetime(ts, format="%Y%m%d%H:%M", utc=True, errors="coerce")
+        .dt.floor("h")
+    )
     return df
 
 def jcm2_to_wm2(jcm2: pd.Series) -> pd.Series:

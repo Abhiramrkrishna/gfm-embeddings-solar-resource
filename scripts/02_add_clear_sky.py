@@ -35,7 +35,7 @@ def compute_clear_sky(times: pd.DatetimeIndex, lat: float, lon: float, elev_m: f
     """
     loc = pvlib.location.Location(latitude=lat, longitude=lon, altitude=elev_m, tz="UTC")
     center_times = times - pd.Timedelta(minutes=30)
-    cs = loc.get_clearsky(center_times, model="ineichen", linke_turbidity=None)
+    cs = loc.get_clearsky(center_times, model="ineichen")
     cs.index = times  # re-label back to hour-ending
     cs.columns = [f"cs_{c}" for c in cs.columns]
     # Also compute solar position for sanity
@@ -87,6 +87,7 @@ def main():
         n_obs = df["FG_WM2"].notna().sum()
         n_day = df.loc[df["is_daytime"], "FG_WM2"].notna().sum()
         n_kt = df["kt_cs"].notna().sum()
+        kt = df["kt_cs"].dropna()
         rows.append({
             "station_id": sid,
             "name": s["name"],
@@ -95,8 +96,13 @@ def main():
             "n_daytime_hours": int(n_day),
             "n_valid_kt": int(n_kt),
             "valid_kt_pct": round(100 * n_kt / df["is_daytime"].sum(), 1) if df["is_daytime"].sum() > 0 else 0.0,
-            "kt_mean": round(df["kt_cs"].mean(), 3),
-            "kt_std": round(df["kt_cs"].std(), 3),
+            "kt_mean": round(kt.mean(), 3),
+            "kt_median": round(kt.median(), 3),
+            "kt_p5": round(kt.quantile(0.05), 3),
+            "kt_p95": round(kt.quantile(0.95), 3),
+            "kt_std": round(kt.std(), 3),
+            "n_over_irradiance": int((kt > 1.0).sum()),
+            "n_fg_gt1500": int((df["FG_WM2"] > 1500).sum()),
         })
     rep = pd.DataFrame(rows)
     rep.to_csv("data/enrichment_report.csv", index=False)
