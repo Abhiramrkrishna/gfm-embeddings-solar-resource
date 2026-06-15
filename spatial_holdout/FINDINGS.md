@@ -171,3 +171,48 @@ n=28 emb-over-geo advantage is genuinely fragile / partly a favorable draw. A
 weak real effect is not excluded (the Spearman hint), but confirming it needs a
 larger, more diverse sample — the cross-border n=50–80 path — not the exhausted
 German DWD pool. Fig: data/figs/geo_easy_diagnostic.png.
+
+## 2026-06-15 — Power analysis: kill-decision for multi-network study
+
+Decision instrument on the 38 pilot stations (locked per-fold-detrend spatial-block pipeline). Nonparametric-bootstrap power for the rule *win-rate>60% AND Wilcoxon one-sided p<0.01*, plus a usefulness bar (median emb_advantage ≥ 25% of the geo baseline error).
+
+
+**Effect size (PART A):** ALL-38 median advantage +0.00015 (win 0.66); CORE +0.00050 (win 0.79); ADDED -0.00090 (win 0.30). Geo baseline median error 0.01925 → 25%-of-geo usefulness bar = **0.00481**.
+
+
+**Power (PART B) & usefulness (PART C):**
+
+| n | opt power | pess power | opt CI-low | pess CI-low |
+|---|---|---|---|---|
+| 20 | 0.16 | 0.00 | -0.00006 | -0.00361 |
+| 30 | 0.25 | 0.00 | -0.00001 | -0.00355 |
+| 40 | 0.37 | 0.00 | +0.00002 | -0.00355 |
+| 60 | 0.57 | 0.00 | +0.00005 | -0.00355 |
+| 80 | 0.70 | 0.00 | +0.00006 | -0.00263 |
+| 120 | 0.85 | 0.00 | +0.00006 | -0.00171 |
+| 160 | 0.92 | 0.00 | +0.00007 | -0.00171 |
+
+- Optimistic power reaches 0.8 at n=120; pessimistic at n=None.
+- Optimistic CI-low clears the 25%-of-geo bar at n=None; pessimistic at n=None.
+
+**VERDICT: WORLD 2 — SCOPE DOWN**
+
+effect is at best significant-but-not-useful: optimistic 0.8 power at n=120, pessimistic at n=None; the emb_advantage CI lower bound never clears the 25%-of-geo usefulness bar (0.00481) (optimistic clears at n=None, pessimistic at n=None). Detectable with enough n, but not lead-generating.
+
+
+The pessimistic curve (new stations ~ the weaker added-10 sample) is the honest one given the pilot's replication failure. Fig: data/figs/power_curves.png.
+
+
+**Reconciliation with RESEARCH_PLAN.md (read after running):**
+- This instrument applied the decision-rule thresholds (win>60% AND p<0.01) to
+  the **emb-vs-GEO** contrast (emb_advantage = |geo_err|−|emb_err|), per the
+  scripts/13 task spec. The pre-registered PRIMARY rule (Plan §3) applies those
+  same thresholds to **emb-vs-SHUFFLE**; emb-vs-geo is the secondary p<0.05
+  check. Beating shuffle ("contains info") is easier than beating geo ("beyond
+  coordinates"); a shuffle-contrast power curve would look rosier. The usefulness
+  conclusion, however, is intrinsically a beyond-coordinates question, so it is
+  unaffected — it must be measured on emb-vs-geo, as done here.
+- WORLD 2 ("scope down") maps directly onto the Plan's own pre-enumerated
+  contingency: §7 row 3 + §8 risk 1 + the Phase-0 gate (§5 line 103) — "if the
+  effect is too small to detect at achievable n, that reframes the paper toward
+  H4 (limitation study)." So this verdict triggers a planned pivot, not a dead end.
