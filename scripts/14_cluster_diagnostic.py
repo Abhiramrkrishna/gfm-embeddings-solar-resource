@@ -18,6 +18,7 @@ Outputs: data/cluster_diagnostic.csv, data/figs/cluster_diagnostic.png
 """
 from __future__ import annotations
 import importlib.util
+import os
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -78,7 +79,11 @@ def terrain_ruggedness(stations):
             print("  terrain_ruggedness: using cache")
             return dict(zip(c["station_id"], c["terrain_ruggedness"]))
     import ee
-    ee.Initialize(project="alpha-earth-x-solar-resources")
+    project = os.environ.get("EE_PROJECT")
+    if not project:
+        raise SystemExit("Set the EE_PROJECT environment variable to your "
+                         "Earth Engine GCP project id (see README / reproduce.sh).")
+    ee.Initialize(project=project)
     dem = ee.Image("USGS/SRTMGL1_003")
     rug = {}
     print(f"  terrain_ruggedness: querying SRTM stdDev ({RUGGED_BUFFER_M} m buffer)")

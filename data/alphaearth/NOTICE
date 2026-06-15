@@ -1,0 +1,21 @@
+AlphaEarth embeddings in this directory — provenance and attribution
+====================================================================
+
+These .npy files are a DERIVED product, not the original dataset. Each file is a
+per-station 64-dimensional vector: the spatial MEAN of the
+GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL image over a 100 m buffer around the DWD
+station, sampled at scale 10 m, for each year 2020-2024.
+
+  filename: {station_id}_{year}.npy   shape: (64,)   dtype: float32
+  index.csv lists the extraction manifest.
+
+Extraction code: scripts/03_extract_alphaearth.py and scripts/10_extract_added_embeddings.py
+
+License: Creative Commons Attribution 4.0 International (CC-BY 4.0).
+
+Required attribution:
+  "The AlphaEarth Foundations Satellite Embedding dataset is produced by Google
+   and Google DeepMind."
+
+Source dataset:
+  https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_SATELLITE_EMBEDDING_V1_ANNUAL

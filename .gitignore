@@ -3,6 +3,30 @@ __pycache__/
 *.pyc
 .DS_Store
 .ipynb_checkpoints/
-data/
 *.log
 .vscode/
+
+# --- Data: ignore raw/bulky/regenerable; track curated, license-clean outputs ---
+data/*
+!data/repro/
+!data/*.csv
+!data/figs/
+!data/alphaearth/
+
+# curated figures only
+data/figs/*
+!data/figs/layer2_bars_v2.png
+!data/figs/geo_easy_diagnostic.png
+!data/figs/power_curves.png
+!data/figs/cluster_diagnostic.png
+!data/figs/layer3_bars.png
+!data/figs/embedding_pca_2023.png
+
+# bundled embeddings (CC-BY 4.0; derived product — see data/alphaearth/NOTICE)
+data/alphaearth/*
+!data/alphaearth/*.npy
+!data/alphaearth/index.csv
+!data/alphaearth/NOTICE
+
+# always ignore large intermediates (parquet)
+*.parquet
