@@ -7,7 +7,7 @@ vs today's n=28 run is the station set; to keep the spatial blocking structurall
 identical (so we compare n, not block geometry) **K is fixed at 4** — the same
 number of geographic blocks as the n=28 run. Pooling therefore adds stations
 *within* the same 4-block partition; expect per-fold buffers to shrink as the
-network densifies (the honest cost of trading buffer for n).
+network densifies (the expected cost of trading buffer for n).
 
 Sensitivity ladder (record length):
   all    : n=38  (core 28 + 10 relaxed)

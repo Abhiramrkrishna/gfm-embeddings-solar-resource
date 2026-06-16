@@ -5,6 +5,7 @@ __pycache__/
 .ipynb_checkpoints/
 *.log
 .vscode/
+CLAUDE.md
 
 # --- Data: ignore raw/bulky/regenerable; track curated, license-clean outputs ---
 data/*

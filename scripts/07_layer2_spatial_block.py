@@ -8,7 +8,7 @@ The original Layer 2 (scripts/05) used leave-one-station-out (LOO) CV. With
 only 28 stations spread over Germany, a held-out station almost always has a
 training station ~50-100 km away. Spatial autocorrelation in the target then
 leaks across the train/test split and can inflate the embedding's apparent
-skill. The honest question for an "ungauged site" claim is: does emb still beat
+skill. The relevant question for an "ungauged site" claim is: does emb still beat
 geo when every test station is geographically isolated from all training
 stations?
 

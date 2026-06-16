@@ -21,7 +21,7 @@ For each feature set X and each fold:
 
 Note: with a per-fold detrend, resid_train is OLS-orthogonal to geo on the exact
 training set, so the "geo" feature set's Ridge collapses to ~0 and its abserr is
-~|resid_test| -- the honest "geometry explains nothing extra" baseline. emb is
+~|resid_test| -- the natural "geometry explains nothing extra" baseline. emb is
 asked to predict that leftover variance at geographically isolated test sites.
 
 Outputs (separate from scripts/07; nothing today is overwritten):

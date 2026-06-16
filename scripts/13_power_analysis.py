@@ -9,8 +9,8 @@ index, per-fold detrend, RidgeCV-GCV, spatial-block CV) reusing the locked
 machinery from scripts/08 + scripts/11. No new data; no re-implementation of the
 detrend/CV.
 
-Note: RESEARCH_PLAN.md is not present in the repo; context taken from CLAUDE.md
-and the spatial_holdout/FINDINGS.md history (core wins 22/28, added 3/10).
+Context (replication outcome): core wins 22/28, added 3/10; see
+spatial_holdout/FINDINGS.md and PREREGISTRATION.md.
 
   PART A  effect-size characterization on the 38 pilot stations
   PART B  subsample power curve (optimistic = all-38 dist, pessimistic = added-10)
@@ -226,7 +226,7 @@ def main():
         print(f"  {n:>4} {opt[n]['power']:>11.3f} {pes[n]['power']:>12.3f}")
     print("  CAVEAT: the bootstrap assumes new stations are drawn from the SAME")
     print("  distribution as the pilot. The pilot replication (added 3/10 vs core")
-    print("  22/28) says they are NOT — the PESSIMISTIC curve is the honest one.")
+    print("  22/28) says they are NOT — the PESSIMISTIC curve is the realistic one.")
 
     def reaches(curve, thr=0.8):
         for n in N_GRID:
@@ -344,7 +344,7 @@ def _write_findings(a, geo_med, useful_bar, opt, pes, opt_n80, pes_n80,
           f"pessimistic at n={pes_n_bar}.",
           f"\n**VERDICT: {verdict}**\n\n{why}\n",
           "\nThe pessimistic curve (new stations ~ the weaker added-10 sample) is "
-          "the honest one given the pilot's replication failure. "
+          "the realistic one given the pilot's replication failure. "
           "Fig: data/figs/power_curves.png.\n"]
     with open("spatial_holdout/FINDINGS.md", "a") as f:
         f.write("\n".join(L) + "\n")
